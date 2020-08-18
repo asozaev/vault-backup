@@ -56,12 +56,18 @@ Authorize in vault, I use here ldap auth:
 vault auth -method=ldap username=your-username
 ```
 
-After succesful authorization you can run dump script and encrypt it with gpg to the output file:
-
+After succesful authorization you can run dump script and then tou need to replace single quotes to double quotes
+to address issue with escape caracter in windows style paths.
 ```bash
-python vault-dump.py | gpg -e -r GPG_KEY_ID > vault.dump.txt.gpg
+python vault-dump.py > vault.dump
+sed -i "s/'/\"/g" vault.dump
+```
+Optionally encrypt the dump.
+```bash
+gpg vault.dump -e -r GPG_KEY_ID > vault.dump.gpg
 
 ```
+
 
 # Importing to new vault
 
@@ -73,7 +79,6 @@ Export some vars:
 ```bash
 export PYTHONIOENCODING=utf-8
 export VAULT_ADDR=https://vault.tld:9001
-export TOP_VAULT_MEATA_PREFIX=/secret/metadata/over9000/
 ```
 
 Authorize in vault:
@@ -86,6 +91,7 @@ Disable bash history, decrypt encrypted file and execute commands stored inside:
 
 ```bash
 set +o history
-. <(gpg -qd vault.dump.txt.gpg)
-
+. <(gpg -qd vault.dump.gpg)
+or
+. vault.dump
 ```
