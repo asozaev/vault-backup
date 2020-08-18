@@ -5,9 +5,9 @@ Dump is a form of commands to inject keys into vault, so it is convenient to
 use it later on to restore to different vault, for example
 
 ```bash
-vault write /secret/dev/ \
+vault kv put /secret/data/dev/ \
   test1_user='test_pass'
-vault write /secret/dev/bash-org-244321 \
+vault kv put /secret/data/dev/bash-org-244321 \
   AzureDiamond='hunter2'
 ```
 
@@ -18,7 +18,7 @@ The following environment variables are used:
  - VAULT_ADDR - vault address enpoint to use, default is http://localhost:8200
  - VAULT_TOKEN - after succesful authorization, should be detected by script itself
  - VAULT_CACERT - cert if using https:// with client cert, but actually not tested
- - TOP_VAULT_PREFIX - path to dump, optional, useful when dumping only a fraction of the strucutre of the vault
+ - TOP_VAULT_META_PREFIX - path to dump, optional, useful when dumping only a fraction of the strucutre of the vault
 
 # Known limitations
 
@@ -47,7 +47,7 @@ Export some vars:
 ```bash
 export PYTHONIOENCODING=utf-8
 export VAULT_ADDR=https://vault.tld:12345
-export TOP_VAULT_PREFIX=/secret/dev/
+export TOP_VAULT_META_PREFIX=/secret/metadata/dev/
 ```
 
 Authorize in vault, I use here ldap auth:
@@ -73,7 +73,7 @@ Export some vars:
 ```bash
 export PYTHONIOENCODING=utf-8
 export VAULT_ADDR=https://vault.tld:9001
-export TOP_VAULT_PREFIX=/secret/over9000/
+export TOP_VAULT_MEATA_PREFIX=/secret/metadata/over9000/
 ```
 
 Authorize in vault:
